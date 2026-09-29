@@ -5,10 +5,10 @@ import { Menu, Search, ShoppingBag, X } from "lucide-react"
 import { useStore } from "./store-provider"
 
 const LINKS = [
-  { href: "#shop", label: "Shop" },
-  { href: "#story", label: "Our Story" },
-  { href: "#notes", label: "Fragrance Notes" },
-  { href: "#reviews", label: "Reviews" },
+  { href: "/shop", label: "Shop" },
+  { href: "/#story", label: "Our Story" },
+  { href: "/#notes", label: "Fragrance Notes" },
+  { href: "/#reviews", label: "Reviews" },
 ]
 
 export function SiteHeader() {
@@ -18,7 +18,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Winterman home">
+        <a className="brand" href="/" aria-label="Winterman home">
           <span className="brand-mark" aria-hidden="true">
             W
           </span>
