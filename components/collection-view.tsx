@@ -29,7 +29,7 @@ function toggle<T>(list: T[], value: T) {
   return list.includes(value) ? list.filter((v) => v !== value) : [...list, value]
 }
 
-export function CollectionView() {
+export function CollectionView({ products = PRODUCTS }: { products?: Product[] }) {
   const [families, setFamilies] = useState<Family[]>([])
   const [types, setTypes] = useState<string[]>([])
   const [prices, setPrices] = useState<string[]>([])
@@ -37,7 +37,7 @@ export function CollectionView() {
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   const list = useMemo(() => {
-    const filtered = PRODUCTS.filter(
+    const filtered = products.filter(
       (p) =>
         (families.length === 0 || families.includes(p.family)) &&
         (types.length === 0 || types.includes(p.type)) &&
@@ -49,7 +49,10 @@ export function CollectionView() {
     if (sort === "rating") sorted.sort((a, b) => b.rating - a.rating)
     if (sort === "discount") sorted.sort((a, b) => discount(b) - discount(a))
     return sorted
-  }, [families, types, prices, sort])
+  }, [products, families, types, prices, sort])
+
+  const familyOptions = FAMILIES.filter((f) => products.some((p) => p.family === f))
+  const typeOptions = TYPES.filter((t) => products.some((p) => p.type === t))
 
   const activeCount = families.length + types.length + prices.length
   const clearAll = () => {
@@ -75,22 +78,22 @@ export function CollectionView() {
 
         <fieldset className="filter-group">
           <legend>Fragrance family</legend>
-          {FAMILIES.map((f) => (
+          {familyOptions.map((f) => (
             <label key={f} className="check">
               <input type="checkbox" checked={families.includes(f)} onChange={() => setFamilies((l) => toggle(l, f))} />
               <span>{f}</span>
-              <small>{PRODUCTS.filter((p) => p.family === f).length}</small>
+              <small>{products.filter((p) => p.family === f).length}</small>
             </label>
           ))}
         </fieldset>
 
         <fieldset className="filter-group">
           <legend>Product type</legend>
-          {TYPES.map((t) => (
+          {typeOptions.map((t) => (
             <label key={t} className="check">
               <input type="checkbox" checked={types.includes(t)} onChange={() => setTypes((l) => toggle(l, t))} />
               <span>{t}</span>
-              <small>{PRODUCTS.filter((p) => p.type === t).length}</small>
+              <small>{products.filter((p) => p.type === t).length}</small>
             </label>
           ))}
         </fieldset>

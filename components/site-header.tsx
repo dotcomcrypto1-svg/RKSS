@@ -6,6 +6,9 @@ import { useStore } from "./store-provider"
 
 const LINKS = [
   { href: "/shop", label: "Shop" },
+  { href: "/shop/bestsellers", label: "Bestsellers" },
+  { href: "/shop/new-arrivals", label: "New" },
+  { href: "/shop/gift-sets", label: "Gifts" },
   { href: "/#story", label: "Our Story" },
   { href: "/#notes", label: "Fragrance Notes" },
   { href: "/#reviews", label: "Reviews" },
