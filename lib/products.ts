@@ -1,3 +1,9 @@
+export type ProductOption = {
+  size: string
+  price: number
+  old: number
+}
+
 export type Product = {
   id: number
   name: string
@@ -8,9 +14,28 @@ export type Product = {
   img: string
   notes: string
   tag: "BESTSELLER" | "NEW" | "POPULAR" | "GIFT"
+  options: ProductOption[]
 }
 
-export const PRODUCTS: Product[] = [
+type ProductSeed = Omit<Product, "options"> & { extra?: ProductOption[] }
+
+function withOptions({ extra, ...product }: ProductSeed): Product {
+  const base = { size: product.size, price: product.price, old: product.old }
+  const options = extra
+    ? [...extra, base]
+    : [
+        { size: "30 ml", price: Math.round((product.price * 0.45) / 10) * 10 - 1, old: Math.round((product.old * 0.45) / 10) * 10 - 1 },
+        { size: "50 ml", price: Math.round((product.price * 0.65) / 10) * 10 - 1, old: Math.round((product.old * 0.65) / 10) * 10 - 1 },
+        base,
+      ]
+  return { ...product, options }
+}
+
+export function getOption(product: Product, size?: string): ProductOption {
+  return product.options.find((o) => o.size === size) ?? product.options[product.options.length - 1]
+}
+
+const SEEDS: ProductSeed[] = [
   {
     id: 1,
     name: "Winterman Glacier",
@@ -54,8 +79,11 @@ export const PRODUCTS: Product[] = [
     img: "/images/bottle-duo.png",
     notes: "Two complementary scents for day & night",
     tag: "GIFT",
+    extra: [{ size: "2 × 30 ml", price: 1299, old: 1599 }],
   },
 ]
+
+export const PRODUCTS: Product[] = SEEDS.map(withOptions)
 
 export type Filter = "all" | "bestseller" | "gift"
 

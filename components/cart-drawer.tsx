@@ -29,7 +29,7 @@ export function CartDrawer() {
             <div className="empty">Your bag is waiting for a signature scent.</div>
           ) : (
             items.map((item) => (
-              <div className="cart-line" key={item.id}>
+              <div className="cart-line" key={item.key}>
                 <Image src={item.img} alt="" width={75} height={90} />
                 <div>
                   <h4>{item.name}</h4>
@@ -37,13 +37,13 @@ export function CartDrawer() {
                     {money(item.price)} · {item.size}
                   </p>
                   <div className="qty">
-                    <button aria-label={`Decrease ${item.name} quantity`} onClick={() => change(item.id, -1)}>
+                    <button aria-label={`Decrease ${item.name} quantity`} onClick={() => change(item.key, -1)}>
                       −
                     </button>
                     <span aria-live="polite">{item.qty}</span>
                     <button
                       aria-label={`Increase ${item.name} quantity`}
-                      onClick={() => change(item.id, 1)}
+                      onClick={() => change(item.key, 1)}
                       disabled={item.qty >= 10}
                     >
                       +
